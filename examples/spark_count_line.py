@@ -3,7 +3,7 @@ import logging
 from airflow import DAG
 from airflow.operators import PythonOperator
 
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from airflow.utils.email import send_email
 
