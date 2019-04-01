@@ -11,19 +11,19 @@ def notify_email(contextDict, **kwargs):
     """Send custom email alerts."""
 
     # email title.
-    title = "Airflow alert: {task_name} Failed".format(**contextDict)
+    title = "Airflow alert: {task_id} Failed".format(**contextDict)
 
     # email contents
     body = """
     Hi Everyone, <br>
     <br>
-    There's been an error in the {task_name} job.<br>
+    There's been an error in the {task_id} job.<br>
     <br>
     Forever yours,<br>
     Airflow bot <br>
     """.format(**contextDict)
 
-    send_email('you_email@address.com', title, body)
+    send_email('kajari@simpledatalabs.com', title, body)
 
 args = {
     'owner': 'airflow'
