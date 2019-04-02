@@ -7,7 +7,7 @@ from datetime import datetime, timedelta
 
 from airflow.utils.email import send_email
 
-from airflow.operators.slack_operator import SlackAPIPostOperator
+#from airflow.operators.slack_operator import SlackAPIPostOperator
 
 def notify_email(contextDict, **kwargs):
     """Send custom email alerts."""
@@ -45,14 +45,14 @@ dag = DAG(
     , default_args = args
 )
 
-def slack_failed_task(context):
-    failed_alert = SlackAPIPostOperator(
-        task_id='slack_failed',
-        channel="#airflow",
-        token="",
-        text = ':red_circle: Task Failed',
-        username = 'kajari',)
-    return failed_alert.execute(context=context)
+#def slack_failed_task(context):
+ #   failed_alert = SlackAPIPostOperator(
+  #      task_id='slack_failed',
+   #     channel="#airflow",
+    #    token="",
+     #   text = ':red_circle: Task Failed',
+      #  username = 'kajari',)
+    #return failed_alert.execute(context=context)
 
 def run_spark(**kwargs):
     import pyspark
