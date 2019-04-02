@@ -49,7 +49,7 @@ def slack_failed_task(context):
     failed_alert = SlackAPIPostOperator(
         task_id='slack_failed',
         channel="#airflow",
-        token="xoxp-92056114549-303825153845-587813191249-846788f1c1b906428fb90cfc06e2f477",
+        token="",
         text = ':red_circle: Task Failed',
         username = 'kajari',)
     return failed_alert.execute(context=context)
@@ -65,6 +65,6 @@ t_main = PythonOperator(
     task_id = 'call_spark'
     , dag = dag
     , python_callable = run_spark
-    , on_failure_callback=slack_failed_task,
+    , on_failure_callback=notify_email,
     provide_context=True
 )
