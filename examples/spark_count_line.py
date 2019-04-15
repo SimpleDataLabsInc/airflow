@@ -7,6 +7,9 @@ from datetime import datetime, timedelta
 
 from airflow.utils.email import send_email
 
+import os
+os.environ['PYSPARK_SUBMIT_ARGS'] = "--master mymaster --total-executor 2 --conf "spark.driver.extraJavaOptions=-Dhttp.proxyHost=proxy.mycorp.com-Dhttp.proxyPort=1234 -Dhttp.nonProxyHosts=localhost|.mycorp.com|127.0.0.1 -Dhttps.proxyHost=proxy.mycorp.com -Dhttps.proxyPort=1234 -Dhttps.nonProxyHosts=localhost|.mycorp.com|127.0.0.1 pyspark-shell"
+
 #from airflow.operators.slack_operator import SlackAPIPostOperator
 
 def notify_email(contextDict, **kwargs):

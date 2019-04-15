@@ -3,9 +3,15 @@ from datetime import datetime, timedelta
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 from airflow.operators.dummy_operator import DummyOperator
 from kubernetes import client, config
-core_v1 = client.CoreV1Api()
+
 config.load_incluster_config()
-core_v1.list_node()
+
+v1 = client.CoreV1Api()
+print("Listing pods with their IPs:")
+ret = v1.list_pod_for_all_namespaces(watch=False)
+for i in ret.items:
+    print("%s\t%s\t%s" %
+          (i.status.pod_ip, i.metadata.namespace, i.metadata.name))
 
 
 default_args = {
