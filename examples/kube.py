@@ -2,6 +2,12 @@ from airflow import DAG
 from datetime import datetime, timedelta
 from airflow.contrib.operators.kubernetes_pod_operator import KubernetesPodOperator
 from airflow.operators.dummy_operator import DummyOperator
+from kubernetes import config
+config.load_incluster_config()
+from kubernetes import client
+core_v1 = client.CoreV1Api()
+ret = v1.list_namespaced_pod("airflow")
+
 
 default_args = {
     'owner': 'airflow',
@@ -20,7 +26,7 @@ dag = DAG(
 
 start = DummyOperator(task_id='start', dag=dag)
 
-passing = KubernetesPodOperator(namespace='default',
+passing = KubernetesPodOperator(namespace='airflow',
                           image="python:3.6",
                           cmds=["python","-c"],
                           arguments=["print('hello world')"],
@@ -31,7 +37,7 @@ passing = KubernetesPodOperator(namespace='default',
                           dag=dag
                           )
 
-failing = KubernetesPodOperator(namespace='default',
+failing = KubernetesPodOperator(namespace='airflow',
                           image="ubuntu:16.04",
                           cmds=["python","-c"],
                           arguments=["print('hello world')"],
