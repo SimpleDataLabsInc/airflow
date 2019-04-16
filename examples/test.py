@@ -12,18 +12,14 @@ default_args = {
     'depends_on_past': True,
     'start_date': datetime(2015, 6, 1),
     'email': ['kajari@simpledatalabs.com'],
-    'email_on_failure': True,
-    'email_on_retry': True,
+    'email_on_failure': False,
+    'email_on_retry': False,
     'retries': 1,
-    'retry_delay': timedelta(minutes=1),
-     'queue': 'bash_queue',
-     'pool': 'backfill',
-    'priority_weight': 10,
-    'end_date': datetime(2016, 1, 3),
+    'retry_delay': timedelta(minutes=120),
 }
 
 dag = DAG(
-    'Kajari1', default_args=default_args, schedule_interval=timedelta(days=1))
+    'Test', default_args=default_args, schedule_interval=timedelta(days=1))
 
 # t1, t2 and t3 are examples of tasks created by instantiating operators
 t1 = BashOperator(
