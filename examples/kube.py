@@ -11,7 +11,7 @@ ret = v1.list_pod_for_all_namespaces(watch=False)
 for i in ret.items:
     print("%s\t%s\t%s" %
           (i.status.pod_ip, i.metadata.namespace, i.metadata.name))
-config.list_kube_config_contexts()
+#config.list_kube_config_contexts()
 
 default_args = {
     'owner': 'airflow',
