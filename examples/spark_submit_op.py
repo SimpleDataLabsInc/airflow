@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 
 args = {
     'owner': 'airflow',
-    'start_date': datetime(2018, 7, 31)
+    #'start_date': datetime(2018, 7, 31)
 }
 dag = DAG('spark_example_new', default_args=args, schedule_interval="@hourly")
 
