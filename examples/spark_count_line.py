@@ -58,8 +58,11 @@ dag = DAG(
 
 def run_spark(**kwargs):
     import pyspark
-    sc = pyspark.SparkContext()
-    df = sc.textFile('file:////usr/local/airflow/dags/test.py')
+    sc = pyspark.SparkContext("local")
+    words = sc.parallelize(["scala","java","hadoop","spark","akka"])
+    count = words.count()
+    print count
+    df = sc.textFile('file:////usr/local/airflow/dags/kube.py')
     logging.info('Number of lines in people.txt = {0}'.format(df.count()))
     sc.stop()
 
