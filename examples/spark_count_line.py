@@ -30,7 +30,7 @@ def notify_email(contextDict, **kwargs):
 
 args = {
     'owner': 'airflow'
-   # , 'start_date': datetime(2019, 4, 1)
+    , 'start_date': datetime(2019, 4, 1)
     , 'provide_context': True
     , 'email': "kajari@simpledatalabs.com"
     , 'email_on_failure': True
@@ -41,7 +41,7 @@ args = {
 
 dag = DAG(
     'spark_count_lines'
-   # , start_date = datetime(2019, 4, 1)
+    , start_date = datetime(2019, 4, 1)
     , schedule_interval = '@hourly'
     , default_args = args
 )

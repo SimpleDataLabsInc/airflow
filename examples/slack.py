@@ -2,6 +2,13 @@ from airflow import DAG
 from airflow.operators.bash_operator import BashOperator
 from airflow.operators.dummy_operator import DummyOperator
 
+dag = DAG(
+    'spark_count_lines'
+    , start_date = datetime(2019, 4, 1)
+    , schedule_interval = '@hourly'
+    , default_args = args
+)
+
 start = DummyOperator(
     task_id='start',
     dag=dag)
