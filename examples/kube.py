@@ -25,7 +25,8 @@ default_args = {
 }
 
 dag = DAG(
-    'kubernetes_hello_world', default_args=default_args, schedule_interval=timedelta(minutes=100))
+    'kubernetes_hello_world', default_args=default_args, schedule_interval=timedelta(days=1),
+    dagrun_timeout=timedelta(minutes=6))
 
 
 start = DummyOperator(task_id='start', dag=dag)

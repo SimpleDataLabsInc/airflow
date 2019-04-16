@@ -8,7 +8,8 @@ args = {
     'owner': 'airflow',
     'start_date': datetime(2019, 7, 31)
 }
-dag = DAG('spark_example_new', default_args=args, schedule_interval="@hourly")
+dag = DAG('spark_example_new', default_args=args, schedule_interval = '@hourly'
+)
 
 operator = SparkSubmitOperator(
     task_id='spark_submit_job',

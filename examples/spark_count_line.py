@@ -42,8 +42,9 @@ args = {
 dag = DAG(
     'spark_count_lines'
     , start_date = datetime(2019, 4, 1)
-    , schedule_interval = '@hourly'
-    , default_args = args
+    , default_args = args,
+    schedule_interval=timedelta(days=1),
+    dagrun_timeout=timedelta(minutes=6)
 )
 
 #def slack_failed_task(context):
@@ -65,7 +66,8 @@ def run_spark(**kwargs):
 t_main = PythonOperator(
     task_id = 'call_spark'
     , dag = dag
-    , python_callable = run_spark
-    , on_failure_callback=notify_email,
+    , python_callable = run_spark,
+    # on_failure_callback=notify_email,
+    keep_failed_pod=False,
     provide_context=True
 )
