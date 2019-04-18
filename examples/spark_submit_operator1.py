@@ -4,7 +4,7 @@ from airflow.contrib.operators.spark_submit_operator import SparkSubmitOperator
 from airflow.utils import timezone
 
 
-DEFAULT_DATE = timezone.datetime(2017, 1, 1)
+DEFAULT_DATE = timezone.datetime(2019, 4, 17)
 
 args = {
     'owner': 'airflow',
@@ -12,39 +12,24 @@ args = {
 }
 dag = DAG('test_dag_id', default_args=args)
 
-_config = {
-    'conf': {
-        'parquet.compression': 'SNAPPY'
-    },
-    'files': 'hive-site.xml',
-    'py_files': 'sample_library.py',
-    'driver_classpath': 'parquet.jar',
-    'jars': 'parquet.jar',
-    'packages': 'com.databricks:spark-avro_2.11:3.2.0',
-    'exclude_packages': 'org.bad.dependency:1.0.0',
-    'repositories': 'http://myrepo.org',
-    'total_executor_cores': 4,
-    'executor_cores': 4,
-    'executor_memory': '22g',
-    'keytab': 'privileged_user.keytab',
-    'principal': 'user/spark@airflow.org',
-    'name': '{{ task_instance.task_id }}',
-    'num_executors': 10,
-    'verbose': True,
-    'application': 'test_application.py',
-    'driver_memory': '3g',
-    'java_class': 'com.foo.bar.AppMain',
-    'application_args': [
-        '-f', 'foo',
-        '--bar', 'bar',
-        '--start', '{{ macros.ds_add(ds, -1)}}',
-        '--end', '{{ ds }}',
-        '--with-spaces', 'args should keep embdedded spaces',
-    ]
-}
+def get_some_value(**kwargs):
+    some_value = 10
+    return some_value
 
-operator = SparkSubmitOperator(
-    task_id='spark_submit_job',
+task1 = PythonOperator(task_id='run_task_1',
+                       python_callable=get_some_value,
+                       provide_context=True,
+                       dag=dag)
+
+task2 = SparkSubmitOperator(
+    task_id='run_sparkSubmit_job',
+    conn_id='spark_default',
+    java_class='com.example',
+    application='example.jar',
+    name='airflow-spark-job',
+    verbose=True,
+    application_args=["{{ti.xcom_pull(task_ids='run_task_1')}}"],  
+    conf={'master':'yarn'},
     dag=dag,
-    **_config
 )
+task1 >> task2
