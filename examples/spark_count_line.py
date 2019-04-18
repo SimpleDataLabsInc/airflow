@@ -43,8 +43,8 @@ dag = DAG(
     'spark_count_lines'
     , start_date = datetime(2019, 4, 1)
     , default_args = args,
-    schedule_interval=timedelta(days=1),
-    dagrun_timeout=timedelta(minutes=6)
+    schedule_interval='@monthly',
+    dagrun_timeout=timedelta(minutes=60)
 )
 
 #def slack_failed_task(context):
