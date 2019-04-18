@@ -62,7 +62,7 @@ def run_spark(**kwargs):
     words = sc.parallelize(["scala","java","hadoop","spark","akka"])
     count = words.count()
     print(count)
-    df = sc.textFile('file:///usr/local/airflow/dags/kube.py')
+    df = sc.textFile('/usr/local/airflow/dags/repo/examples/kube.py')
     print('Number of lines in people.txt = {0}'.format(df.count()))
     sc.stop()
 
