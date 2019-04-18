@@ -2,6 +2,7 @@ from airflow import DAG
 
 from airflow.contrib.operators.spark_submit_operator import SparkSubmitOperator
 from airflow.utils import timezone
+from airflow.operators import PythonOperator
 
 
 DEFAULT_DATE = timezone.datetime(2019, 4, 17)
