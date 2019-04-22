@@ -1,31 +1,50 @@
 from airflow import DAG
 
 from airflow.contrib.operators.spark_submit_operator import SparkSubmitOperator
-from datetime import datetime, timedelta
+from airflow.utils import timezone
 
 
+DEFAULT_DATE = timezone.datetime(2017, 1, 1)
 
-default_args = {
-    'owner': 'frank@mozilla.com',
-    'depends_on_past': False,
-    'start_date': datetime(2018, 10, 29),
-    'email': ['telemetry-alerts@mozilla.com', 'frank@mozilla.com'],
-    'email_on_failure': True,
-    'email_on_retry': True,
-    'retries': 2,
-    'retry_delay': timedelta(minutes=30),
+args = {
+    'owner': 'airflow',
+    'start_date': DEFAULT_DATE
+}
+dag = DAG('test_dag_id', default_args=args)
+
+_config = {
+    'conf': {
+        'parquet.compression': 'SNAPPY'
+    },
+    'files': 'hive-site.xml',
+    'py_files': 'sample_library.py',
+    'driver_classpath': 'parquet.jar',
+    'jars': 'parquet.jar',
+    'packages': 'com.databricks:spark-avro_2.11:3.2.0',
+    'exclude_packages': 'org.bad.dependency:1.0.0',
+    'repositories': 'http://myrepo.org',
+    'total_executor_cores': 4,
+    'executor_cores': 4,
+    'executor_memory': '22g',
+    'keytab': 'privileged_user.keytab',
+    'principal': 'user/spark@airflow.org',
+    'name': '{{ task_instance.task_id }}',
+    'num_executors': 10,
+    'verbose': True,
+    'application': 'test_application.py',
+    'driver_memory': '3g',
+    'java_class': 'com.foo.bar.AppMain',
+    'application_args': [
+        '-f', 'foo',
+        '--bar', 'bar',
+        '--start', '{{ macros.ds_add(ds, -1)}}',
+        '--end', '{{ ds }}',
+        '--with-spaces', 'args should keep embdedded spaces',
+    ]
 }
 
-dag = DAG('android_addons', default_args=default_args, schedule_interval='@daily')
-
-android_addons = SparkSubmitOperator(
-    task_id="android_addons",
-    job_name="Update android addons",
-    execution_timeout=timedelta(hours=4),
-    instance_count=5,
-    owner="frank@mozilla.com",
-    email=["telemetry-alerts@mozilla.com", "frank@mozilla.com"],
-    env={"date": "{{ ds_nodash }}"},
-    uri="https://raw.githubusercontent.com/mozilla/telemetry-airflow/master/jobs/android-addons.ipynb",
-    output_visibility="public",
-    dag=dag)
+operator = SparkSubmitOperator(
+    task_id='spark_submit_job1',
+    dag=dag,
+    **_config
+)
