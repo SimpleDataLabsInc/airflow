@@ -4,8 +4,8 @@ from airflow.operators.python_operator import PythonOperator
 from datetime import datetime, timedelta
 import os
 
-s3Bucket = 'logstashtest1'
-s3Key = 'AKIAITROTGC7VVQJOV7Q'
+s3Bucket = 'sdl-file-store'
+s3Key = 'user_artists.csv'
 print(os.getcwd())
 redditFile = os.getcwd() + '/data/RC-s3-2007-10'
 #can alternatively wrap methods in functions and use PythonOperator instead of BashOperator
