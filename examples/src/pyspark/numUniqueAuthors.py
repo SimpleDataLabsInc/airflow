@@ -13,9 +13,9 @@ filename = sys.argv[1]
 f = sc.textFile(filename)
 
 authorCount = f.map(lambda line : json.loads(line)) \
-	.filter(lambda record: 'author' in record) \
-	.groupBy(lambda record: record['author']) \
+	.filter(lambda record: 'artistID' in record) \
+	.groupBy(lambda record: record['artistID']) \
 	.count()
 
-print('*************** authorCount **********************    ')
+print('*************** artistCount **********************    ')
 print(authorCount)

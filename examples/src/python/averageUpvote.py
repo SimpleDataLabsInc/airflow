@@ -8,7 +8,7 @@ total = 0
 with open(filename) as f:
     for i, line in enumerate(f):
         jsonLine = json.loads(line)
-        if 'ups' in jsonLine:
+        if 'weight' in jsonLine:
             count += 1
-            total += jsonLine['ups']
+            total += jsonLine['weight']
 print total/count

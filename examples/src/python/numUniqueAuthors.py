@@ -9,6 +9,6 @@ authorSet = Set()
 with open(filename) as f:
 	for i, line in enumerate(f):
 		jsonLine = json.loads(line)
-		if 'author' in jsonLine:	
-			authorSet.add(jsonLine['author'])
+		if 'artistID' in jsonLine:
+			authorSet.add(jsonLine['artistID'])
 print len(authorSet)

@@ -4,8 +4,8 @@ from airflow.operators.python_operator import PythonOperator
 from datetime import datetime, timedelta
 import os
 
-s3Bucket = 'logstashtest1'
-s3Key = 'AKIAJ3QQMBORYP3J7UJQ'
+s3Bucket = 'sdl-file-store'
+s3Key = 'user_artists.csv'
 print(os.getcwd())
 redditFile = os.getcwd() + '/data/RC-s3-2007-10'
 srcDir = os.getcwd() + '/dags/repo/examples/src/'
@@ -29,7 +29,7 @@ downloadData= BashOperator(
     dag=dag)
 
 numUniqueAuthors = BashOperator(
-    task_id='Unique-authors',
+    task_id='Unique-artists',
     bash_command=sparkSubmit + ' ' + srcDir + 'pyspark/numUniqueAuthors.py ' + redditFile,
     dag=dag)
 numUniqueAuthors.set_upstream(downloadData)

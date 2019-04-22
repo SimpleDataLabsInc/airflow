@@ -11,9 +11,9 @@ filename = sys.argv[1]
 f = sc.textFile(filename)
 
 avg = f.map(lambda line : json.loads(line)) \
-	.filter(lambda record: 'ups' in record) \
-	.map(lambda record: record['ups']) \
+	.filter(lambda record: 'weight' in record) \
+	.map(lambda record: record['weight']) \
 	.mean()
 
-print("******************************* avg *************************       ")
+print("******************************* weight *************************       ")
 print(avg)
