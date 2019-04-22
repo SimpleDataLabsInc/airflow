@@ -8,7 +8,7 @@ s3Bucket = 'logstashtest1'
 s3Key = 'AKIAJ3QQMBORYP3J7UJQ'
 print(os.getcwd())
 redditFile = os.getcwd() + '/data/RC-s3-2007-10'
-srcDir = os.getcwd() + '/src/'
+srcDir = os.getcwd() + '/dags/repo/examples/src/'
 
 sparkSubmit = '/usr/local/spark/bin/spark-submit'
 
