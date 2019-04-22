@@ -9,7 +9,7 @@ s3Key = 'user_artists.csv'
 print(os.getcwd())
 redditFile = os.getcwd() + '/data/RC-s3-2007-10'
 #can alternatively wrap methods in functions and use PythonOperator instead of BashOperator
-srcDir = os.getcwd() + '/dags/repo/examples/src/'
+srcDir = os.getcwd() + '/dags/repo/examples/src/python/'
 
 default_args = {
     'owner': 'airflow',
