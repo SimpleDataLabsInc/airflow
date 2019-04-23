@@ -22,22 +22,19 @@ spark_task = BashOperator(
     dag=dag
 )
 
+_config ={'application': srcDir,
+          'master' : 'local',
+          'deploy-mode' : 'cluster',
+          'executor_cores': 1,
+          'EXECUTORS_MEM': '1G'
+          }
+
 operator = SparkSubmitOperator(
     task_id='spark_submit_op_job',
     dag=dag,
-    conn_id='spark_default',
     java_class='hello',
-    jars=srcDir,
-    driver_class_path = srcDir,
-    verbose=False,
-    driver_memory = '1g',
-    application_args= [
-                            '-f', 'foo',
-                            '--bar', 'bar',
-                            '--start', '{{ macros.ds_add(ds, -1)}}',
-                            '--end', '{{ ds }}',
-                            '--with-spaces', 'args should keep embdedded spaces',
-                        ],
+    application=srcDir,
+    **_config
 )
 
 operator >> spark_task
