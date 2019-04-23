@@ -33,7 +33,6 @@ operator = SparkSubmitOperator(
     task_id='spark_submit_op_job',
     dag=dag,
     java_class='hello',
-    application=srcDir,
     **_config
 )
 
