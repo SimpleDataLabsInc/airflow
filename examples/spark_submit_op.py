@@ -1,7 +1,7 @@
 from airflow import DAG
 
 from airflow.contrib.operators.spark_submit_operator import SparkSubmitOperator
-from airflow.utils import timezone
+from airflow.utils import timezone, timedelta
 from airflow.operators.bash_operator import BashOperator
 import os
 
@@ -11,14 +11,9 @@ args = {
     'owner': 'airflow',
     'start_date': DEFAULT_DATE
 }
-dag = DAG('sparkjob', default_args=args)
+dag = DAG('sparkjob', default_args=args, schedule_interval='@monthly',
+                                                            dagrun_timeout=timedelta(minutes=60))
 
-spark_task = BashOperator(
-    task_id='spark_java',
-    bash_command='spark-submit --class {{ params.class }} {{ params.jar }}',
-    params={'class': 'hello', 'jar': srcDir},
-    dag=dag
-)
 
 operator = SparkSubmitOperator(
     task_id='spark_submit_job1',
@@ -29,4 +24,3 @@ operator = SparkSubmitOperator(
     verbose=False,
 )
 
-operator >> spark_task
