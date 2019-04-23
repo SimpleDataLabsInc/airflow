@@ -3,7 +3,7 @@ import logging
 from airflow import DAG
 from airflow.operators import PythonOperator
 
-from datetime import datetime
+from datetime import datetime, timedelta
 
 args = {
     'owner': 'airflow'
@@ -14,7 +14,8 @@ args = {
 dag = DAG(
     'spark_count_lines'
     , start_date = datetime(2019, 4, 1)
-    , schedule_interval = '@hourly'
+    ,schedule_interval='@monthly',
+    dagrun_timeout=timedelta(minutes=60)
     , default_args = args
 )
 
